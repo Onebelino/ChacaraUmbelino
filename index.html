@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de Lazer - Piscina</title>
+    <title>Recanto do Lazer - Aluguel de Piscina</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,44 +12,157 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
+        /* Estilos personalizados */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
         .day-card { aspect-ratio: 1/1; cursor: pointer; transition: all 0.2s; }
         .day-card:hover { transform: scale(1.05); }
+        .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        
+        /* Ajuste para mobile no calendário */
+        @media (max-width: 600px) {
+            .calendar-grid { gap: 0.2rem; }
+            .day-card { font-size: 0.8rem; }
+        }
     </style>
 </head>
-<body class="bg-gray-100 font-sans pb-10">
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <header class="bg-blue-600 text-white p-6 shadow-md text-center">
-        <h1 class="text-3xl font-bold"><i class="fa-solid fa-water"></i> Espaço Lazer & Piscina</h1>
-        <p class="mt-2 text-blue-100">Selecione uma data disponível para reservar</p>
-    </header>
+    <nav class="glass-nav fixed w-full z-50 shadow-md top-0">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600"><i class="fa-solid fa-water"></i> Recanto</a>
+            
+            <div class="hidden md:flex space-x-8 font-medium text-gray-600">
+                <a href="#somos" class="hover:text-blue-600 transition">Quem Somos</a>
+                <a href="#fotos" class="hover:text-blue-600 transition">Fotos & Vídeos</a>
+                <a href="#regras" class="hover:text-blue-600 transition">Regras</a>
+                <a href="#agenda" class="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Reservar Agora</a>
+            </div>
 
-    <main class="max-w-4xl mx-auto mt-8 p-4">
+            <div class="md:hidden text-2xl text-blue-600">
+                <a href="#agenda"><i class="fa-solid fa-calendar-days"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative h-[60vh] flex items-center justify-center bg-blue-900 overflow-hidden mt-16">
+        <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=2070&auto=format&fit=crop" 
+             class="absolute inset-0 w-full h-full object-cover opacity-50" alt="Piscina">
         
-        <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow">
-            <button id="prevMonth" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"><i class="fa-solid fa-chevron-left"></i></button>
-            <h2 id="currentMonthYear" class="text-xl font-bold capitalize text-gray-700"></h2>
-            <button id="nextMonth" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="relative z-10 text-center text-white px-4">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Seu Final de Semana Perfeito</h1>
+            <p class="text-xl md:text-2xl mb-8 drop-shadow-md">Lazer, piscina e churrasco para você e sua família.</p>
+            <a href="#agenda" class="bg-green-500 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:bg-green-600 transition transform hover:-translate-y-1">
+                Ver Datas Disponíveis
+            </a>
         </div>
+    </section>
 
-        <div class="flex gap-4 justify-center mb-4 text-sm">
-            <span class="flex items-center"><div class="w-4 h-4 bg-green-500 rounded mr-1"></div> Livre</span>
-            <span class="flex items-center"><div class="w-4 h-4 bg-yellow-400 rounded mr-1"></div> Pendente</span>
-            <span class="flex items-center"><div class="w-4 h-4 bg-red-500 rounded mr-1"></div> Ocupado/Bloqueado</span>
+    <section id="somos" class="py-16 max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Quem Somos</h2>
+        <p class="text-gray-600 text-lg leading-relaxed mb-8">
+            Oferecemos um espaço exclusivo e privativo para seus eventos familiares. 
+            Com uma piscina de 30.000 litros, área gourmet completa e churrasqueira, 
+            o Recanto é o lugar ideal para aniversários, confraternizações ou apenas para relaxar.
+            Ambiente seguro, limpo e preparado para receber você.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div class="p-4 bg-white shadow rounded-lg">
+                <i class="fa-solid fa-wifi text-4xl text-blue-500 mb-2"></i>
+                <h3 class="font-bold">Wi-Fi Grátis</h3>
+            </div>
+            <div class="p-4 bg-white shadow rounded-lg">
+                <i class="fa-solid fa-utensils text-4xl text-orange-500 mb-2"></i>
+                <h3 class="font-bold">Área Gourmet</h3>
+            </div>
+            <div class="p-4 bg-white shadow rounded-lg">
+                <i class="fa-solid fa-car text-4xl text-gray-500 mb-2"></i>
+                <h3 class="font-bold">Estacionamento</h3>
+            </div>
         </div>
+    </section>
 
-        <div class="grid grid-cols-7 gap-2 mb-2 text-center font-bold text-gray-500">
-            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+    <section id="fotos" class="py-16 bg-gray-100">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Nosso Espaço</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="overflow-hidden rounded-lg shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1572331165267-854da2b00dc1?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1533423723326-728b76c75e7a?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+                <div class="overflow-hidden rounded-lg shadow-lg h-64 bg-black flex items-center justify-center relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1517406603831-29e6123351d1?w=800" class="w-full h-full object-cover opacity-70">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fa-solid fa-play-circle text-6xl text-white opacity-80 group-hover:scale-110 transition"></i>
+                    </div>
+                    <span class="absolute bottom-2 text-white text-sm">Tour pelo espaço (Clique para ver)</span>
+                </div>
+                <div class="overflow-hidden rounded-lg shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1560763462-8e1d51a6652e?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+                 <div class="overflow-hidden rounded-lg shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1584627063467-b50a0058e579?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div id="calendarGrid" class="calendar-grid"></div>
-    </main>
+    <section id="regras" class="py-16 max-w-4xl mx-auto px-4">
+        <div class="bg-red-50 border-l-4 border-red-500 p-8 rounded shadow-sm">
+            <h2 class="text-3xl font-bold text-red-700 mb-6"><i class="fa-solid fa-clipboard-list"></i> Regras e Termos</h2>
+            <ul class="space-y-4 text-gray-700">
+                <li class="flex items-start"><i class="fa-solid fa-circle-exclamation text-red-500 mt-1 mr-3"></i> <strong>Som Automotivo:</strong> Estritamente proibido o uso de som automotivo ou caixas de som profissionais que incomodem a vizinhança.</li>
+                <li class="flex items-start"><i class="fa-solid fa-clock text-red-500 mt-1 mr-3"></i> <strong>Horário:</strong> O uso do espaço é permitido das 08:00 às 22:00 impreterivelmente.</li>
+                <li class="flex items-start"><i class="fa-solid fa-wine-bottle text-red-500 mt-1 mr-3"></i> <strong>Vidros:</strong> Proibido copos e garrafas de vidro na área da borda da piscina.</li>
+                <li class="flex items-start"><i class="fa-solid fa-trash text-red-500 mt-1 mr-3"></i> <strong>Limpeza:</strong> O local deve ser entregue nas mesmas condições de organização. Jogue o lixo nos cestos.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="agenda" class="py-16 bg-blue-50">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-800">Agenda e Reservas</h2>
+                <p class="text-gray-600">Selecione uma data verde para iniciar sua reserva.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <button id="prevMonth" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="currentMonthYear" class="text-xl font-bold capitalize text-gray-700"></h2>
+                    <button id="nextMonth" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <div class="flex gap-4 justify-center mb-6 text-sm flex-wrap">
+                    <span class="flex items-center"><div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div> Livre</span>
+                    <span class="flex items-center"><div class="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div> Pendente</span>
+                    <span class="flex items-center"><div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div> Ocupado</span>
+                </div>
+
+                <div class="grid grid-cols-7 gap-2 mb-2 text-center font-bold text-gray-400 text-sm">
+                    <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div>
+                </div>
+
+                <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <p class="mb-2">&copy; 2024 Recanto do Lazer. Todos os direitos reservados.</p>
+        <p class="text-sm text-gray-400">Desenvolvido para Portfólio.</p>
+    </footer>
 
     <script>
         // --- CONFIGURAÇÃO ---
-        const SUPABASE_URL = 'SUA_URL_SUPABASE_AQUI';
-        const SUPABASE_KEY = 'SUA_CHAVE_ANON_PUBLIC_AQUI';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // COLE SUAS CHAVES AQUI (As mesmas que funcionaram antes)
+        const SUPABASE_URL = 'https://qgsvnaltmidtzjxeyylu.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_vAGlHnc6wjdSfXhi-BzAZA_x2jRT5uh';
+        
+        // Conexão segura
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentDate = new Date();
         let configPreco = 0;
@@ -68,16 +181,15 @@
 
         // --- FUNÇÕES DE DADOS ---
         async function fetchConfig() {
-            const { data } = await supabase.from('config').select('preco_padrao').single();
+            const { data } = await _supabase.from('config').select('preco_padrao').single();
             if(data) configPreco = data.preco_padrao;
         }
 
         async function fetchDadosMes() {
-            // Busca dados para renderizar o mês
-            const { data: res } = await supabase.from('reservas').select('*');
+            const { data: res } = await _supabase.from('reservas').select('*');
             reservas = res || [];
             
-            const { data: custom } = await supabase.from('calendario_custom').select('*');
+            const { data: custom } = await _supabase.from('calendario_custom').select('*');
             calendarioCustom = custom || [];
         }
 
@@ -96,45 +208,41 @@
 
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            // Padding dias vazios
             for (let i = 0; i < firstDay; i++) {
                 grid.appendChild(document.createElement('div'));
             }
 
-            // Dias do mês
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const el = document.createElement('div');
-                el.className = 'day-card flex flex-col items-center justify-center rounded-lg shadow text-sm font-bold relative';
+                el.className = 'day-card flex flex-col items-center justify-center rounded-lg shadow text-sm font-bold relative transition border border-gray-100';
                 el.innerText = day;
 
-                // Lógica de Estado
                 const reserva = reservas.find(r => r.data === dateStr);
                 const custom = calendarioCustom.find(c => c.data === dateStr);
                 
-                let status = 'livre'; // livre, pendente, ocupado
+                let status = 'livre'; 
                 let valor = custom?.tipo === 'preco_especial' ? custom.novo_valor : configPreco;
 
                 if (custom?.tipo === 'bloqueio') status = 'ocupado';
                 else if (reserva?.status === 'confirmado') status = 'ocupado';
                 else if (reserva?.status === 'pendente') status = 'pendente';
 
-                // Estilização baseada no status
                 if (status === 'ocupado') {
-                    el.classList.add('bg-red-500', 'text-white', 'cursor-not-allowed');
+                    el.classList.add('bg-red-500', 'text-white', 'opacity-80', 'cursor-not-allowed');
                 } else if (status === 'pendente') {
                     el.classList.add('bg-yellow-400', 'text-white', 'cursor-not-allowed');
-                    el.innerHTML += `<span class="text-xs font-normal block">Pendente</span>`;
+                    el.innerHTML += `<span class="text-[10px] font-normal block">Pendente</span>`;
                 } else {
-                    el.classList.add('bg-green-500', 'text-white', 'hover:bg-green-600');
-                    el.innerHTML += `<span class="text-xs font-normal block">R$ ${valor}</span>`;
+                    el.classList.add('bg-white', 'text-gray-700', 'hover:bg-green-500', 'hover:text-white', 'hover:shadow-md');
+                    el.innerHTML += `<span class="text-[10px] font-normal block text-green-600 group-hover:text-white">R$ ${valor}</span>`;
+                    // Classe group para hover funcionar no filho
+                    el.classList.add('group');
                     el.onclick = () => abrirReserva(dateStr, valor);
                 }
-
                 grid.appendChild(el);
             }
         }
@@ -144,26 +252,27 @@
             const dataFormatada = new Date(dataISO + 'T00:00:00').toLocaleDateString('pt-BR');
 
             const { value: formValues } = await Swal.fire({
-                title: `Reservar para ${dataFormatada}`,
+                title: `<span class="text-xl">Reservar: ${dataFormatada}</span>`,
                 html: `
-                    <div class="text-left mb-4 text-sm text-gray-600">
-                        <p><strong>Valor:</strong> R$ ${valor.toFixed(2)}</p>
-                        <p class="mt-2 text-xs">Ao continuar, você concorda com as regras de uso: Proibido som automotivo, horário até 22h, manter limpeza.</p>
+                    <div class="text-left mb-4 bg-blue-50 p-4 rounded text-sm text-gray-700">
+                        <p class="text-lg font-bold text-blue-800">Valor: R$ ${valor.toFixed(2)}</p>
+                        <p class="mt-2 text-xs">Ao clicar em aceitar, você concorda com as regras descritas no site (sem som automotivo, horário limite, etc).</p>
                     </div>
                     <input id="swal-nome" class="swal2-input" placeholder="Seu Nome Completo">
-                    <input id="swal-cpf" class="swal2-input" placeholder="CPF (000.000.000-00)">
-                    <input id="swal-tel" class="swal2-input" placeholder="WhatsApp (11999999999)">
-                    <input id="swal-end" class="swal2-input" placeholder="Endereço">
+                    <input id="swal-cpf" class="swal2-input" placeholder="CPF (Apenas números)">
+                    <input id="swal-tel" class="swal2-input" placeholder="WhatsApp (com DDD)">
                 `,
                 focusConfirm: false,
-                confirmButtonText: 'Aceitar e Reservar',
+                confirmButtonColor: '#2563EB', // Azul do site
+                confirmButtonText: 'Aceitar e Gerar Contrato <i class="fa fa-file-pdf"></i>',
                 showCancelButton: true,
+                cancelButtonText: 'Cancelar',
                 preConfirm: () => {
                     const nome = document.getElementById('swal-nome').value;
                     const cpf = document.getElementById('swal-cpf').value;
                     const tel = document.getElementById('swal-tel').value;
                     if (!nome || !cpf || !tel) {
-                        Swal.showValidationMessage('Preencha todos os campos obrigatórios');
+                        Swal.showValidationMessage('Por favor, preencha todos os campos.');
                     }
                     return { nome, cpf, tel, valor, dataISO, dataFormatada };
                 }
@@ -175,10 +284,9 @@
         }
 
         async function processarReserva(dados) {
-            Swal.fire({ title: 'Processando...', didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Salvando...', didOpen: () => Swal.showLoading() });
 
-            // 1. Salvar no Supabase
-            const { error } = await supabase.from('reservas').insert({
+            const { error } = await _supabase.from('reservas').insert({
                 data: dados.dataISO,
                 status: 'pendente',
                 nome: dados.nome,
@@ -188,24 +296,23 @@
             });
 
             if (error) {
-                Swal.fire('Erro', 'Dia já reservado por outra pessoa neste instante.', 'error');
+                console.error(error);
+                Swal.fire('Ops!', 'Parece que alguém acabou de reservar essa data ou houve um erro.', 'error');
                 return;
             }
 
-            // 2. Gerar PDF
-            const pdfBlob = gerarPDF(dados);
+            gerarPDF(dados);
 
-            // 3. Redirecionar WhatsApp
-            const msg = `Olá! Gostaria de confirmar a reserva da piscina para o dia *${dados.dataFormatada}*.%0AValor: R$ ${dados.valor}.%0AMeus dados: ${dados.nome} - CPF: ${dados.cpf}.%0A%0A*O contrato segue em anexo (PDF gerado).*`;
+            const msg = `Olá! Quero confirmar a reserva no Recanto para o dia *${dados.dataFormatada}*.%0AValor: R$ ${dados.valor}.%0ANome: ${dados.nome}.%0A*Segue meu contrato assinado em anexo.*`;
             
             Swal.fire({
                 icon: 'success',
-                title: 'Pré-reserva realizada!',
-                text: 'O contrato foi baixado no seu celular. Envie ele agora no WhatsApp para confirmar.',
-                confirmButtonText: 'Ir para WhatsApp'
+                title: 'Reserva Iniciada!',
+                html: 'O contrato PDF foi baixado.<br><b>Envie-o agora no WhatsApp para confirmar.</b>',
+                confirmButtonText: '<i class="fab fa-whatsapp"></i> Enviar no WhatsApp',
+                confirmButtonColor: '#25D366'
             }).then(() => {
                 window.open(`https://wa.me/55SEUNUMEROAQUI?text=${msg}`, '_blank');
-                // Recarrega para atualizar status
                 location.reload(); 
             });
         }
@@ -214,23 +321,51 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            doc.setFontSize(20);
-            doc.text("CONTRATO DE LOCAÇÃO DE ESPAÇO", 105, 20, null, null, "center");
-            
+            // Cabeçalho
+            doc.setFillColor(41, 128, 185); // Azul
+            doc.rect(0, 0, 210, 20, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.text("CONTRATO DE LOCAÇÃO - RECANTO DO LAZER", 105, 13, null, null, "center");
+
+            // Corpo
+            doc.setTextColor(0, 0, 0);
             doc.setFontSize(12);
-            doc.text(`LOCATÁRIO: ${dados.nome}, CPF: ${dados.cpf}`, 20, 40);
-            doc.text(`DATA DA LOCAÇÃO: ${dados.dataFormatada}`, 20, 50);
-            doc.text(`VALOR ACORDADO: R$ ${dados.valor.toFixed(2)}`, 20, 60);
+            doc.text(`Identificação do Locatário:`, 20, 40);
+            doc.setFont("helvetica", "bold");
+            doc.text(`${dados.nome}`, 20, 48);
+            doc.setFont("helvetica", "normal");
+            doc.text(`CPF: ${dados.cpf} | WhatsApp: ${dados.tel}`, 20, 55);
+
+            doc.line(20, 60, 190, 60);
+
+            doc.text(`Detalhes da Reserva:`, 20, 70);
+            doc.setFontSize(14);
+            doc.text(`DATA: ${dados.dataFormatada}`, 20, 80);
+            doc.text(`VALOR TOTAL: R$ ${dados.valor.toFixed(2)}`, 120, 80);
             
-            doc.text("TERMOS E REGRAS:", 20, 80);
-            doc.setFontSize(10);
-            const regras = "1. O locatário se responsabiliza por qualquer dano ao imóvel.\n2. É proibido som automotivo.\n3. Horário de uso: 08:00 às 22:00.\n4. Proibido uso de garrafas de vidro na área da piscina.";
-            doc.text(regras, 20, 90);
+            doc.setFontSize(11);
+            doc.text("Termos de Responsabilidade:", 20, 100);
+            const regras = [
+                "1. O LOCATÁRIO assume total responsabilidade por danos causados ao imóvel.",
+                "2. É PROIBIDO som automotivo e gritarias excessivas (Lei do Silêncio).",
+                "3. Horário de funcionamento: 08:00 às 22:00.",
+                "4. A piscina deve ser usada com trajes adequados.",
+                "5. Proibido objetos de vidro na borda da piscina."
+            ];
+            
+            let y = 110;
+            regras.forEach(regra => {
+                doc.text(regra, 20, y);
+                y += 10;
+            });
 
-            doc.text("__________________________________", 105, 150, null, null, "center");
-            doc.text("Assinatura Digital (Aceite via Web)", 105, 155, null, null, "center");
+            doc.text("__________________________________________", 105, 170, null, null, "center");
+            doc.text("Assinatura Digital do Locatário", 105, 175, null, null, "center");
+            doc.setFontSize(8);
+            doc.text(`Aceite eletrônico registrado em: ${new Date().toLocaleString()}`, 105, 180, null, null, "center");
 
-            doc.save(`Contrato_${dados.nome}_${dados.dataISO}.pdf`);
+            doc.save(`Contrato_Recanto_${dados.dataISO}.pdf`);
         }
     </script>
 </body>
