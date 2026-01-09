@@ -3,175 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recanto do Lazer - Aluguel de Piscina</title>
+    <title>Chácara Umbelino - Lazer e Eventos</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* Estilos personalizados */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
-        .day-card { aspect-ratio: 1/1; cursor: pointer; transition: all 0.2s; }
-        .day-card:hover { transform: scale(1.05); }
         .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        
-        /* Ajuste para mobile no calendário */
-        @media (max-width: 600px) {
-            .calendar-grid { gap: 0.2rem; }
-            .day-card { font-size: 0.8rem; }
-        }
+        .swiper-button-next, .swiper-button-prev { color: #fff; text-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        @media (max-width: 600px) { .calendar-grid { gap: 0.3rem; } }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
     <nav class="glass-nav fixed w-full z-50 shadow-md top-0">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-blue-600"><i class="fa-solid fa-water"></i> Recanto</a>
-            
+            <a href="#" class="text-2xl font-bold text-green-700 tracking-tighter"><i class="fa-solid fa-tree"></i> Chácara Umbelino</a>
             <div class="hidden md:flex space-x-8 font-medium text-gray-600">
-                <a href="#somos" class="hover:text-blue-600 transition">Quem Somos</a>
-                <a href="#fotos" class="hover:text-blue-600 transition">Fotos & Vídeos</a>
-                <a href="#regras" class="hover:text-blue-600 transition">Regras</a>
-                <a href="#agenda" class="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Reservar Agora</a>
+                <a href="#somos" class="hover:text-green-700 transition">A Chácara</a>
+                <a href="#fotos" class="hover:text-green-700 transition">Fotos</a>
+                <a href="#regras" class="hover:text-green-700 transition">Regras</a>
+                <a href="#agenda" class="px-5 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition shadow-lg hover:shadow-green-500/30">Reservar</a>
             </div>
-
-            <div class="md:hidden text-2xl text-blue-600">
-                <a href="#agenda"><i class="fa-solid fa-calendar-days"></i></a>
-            </div>
+            <a href="#agenda" class="md:hidden text-green-700 text-2xl"><i class="fa-solid fa-calendar-check"></i></a>
         </div>
     </nav>
 
-    <section class="relative h-[60vh] flex items-center justify-center bg-blue-900 overflow-hidden mt-16">
-        <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=2070&auto=format&fit=crop" 
-             class="absolute inset-0 w-full h-full object-cover opacity-50" alt="Piscina">
-        
-        <div class="relative z-10 text-center text-white px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Seu Final de Semana Perfeito</h1>
-            <p class="text-xl md:text-2xl mb-8 drop-shadow-md">Lazer, piscina e churrasco para você e sua família.</p>
-            <a href="#agenda" class="bg-green-500 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:bg-green-600 transition transform hover:-translate-y-1">
-                Ver Datas Disponíveis
+    <section class="relative h-[70vh] flex items-center justify-center bg-gray-900 mt-16 overflow-hidden">
+        <img id="heroImage" src="" class="absolute inset-0 w-full h-full object-cover opacity-60 transition duration-1000" alt="Chácara">
+        <div class="relative z-10 text-center text-white px-4 max-w-3xl">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg leading-tight">Momentos Inesquecíveis</h1>
+            <p class="text-xl md:text-2xl mb-8 drop-shadow-md font-light">Sua melhor opção de lazer, piscina e descanso.</p>
+            <a href="#agenda" class="inline-block bg-green-500 text-white px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-green-600 transition transform hover:-translate-y-1">
+                Ver Disponibilidade
             </a>
         </div>
     </section>
 
-    <section id="somos" class="py-16 max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-800 mb-6">Quem Somos</h2>
-        <p class="text-gray-600 text-lg leading-relaxed mb-8">
-            Oferecemos um espaço exclusivo e privativo para seus eventos familiares. 
-            Com uma piscina de 30.000 litros, área gourmet completa e churrasqueira, 
-            o Recanto é o lugar ideal para aniversários, confraternizações ou apenas para relaxar.
-            Ambiente seguro, limpo e preparado para receber você.
+    <section id="somos" class="py-20 max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-8">Nossa Estrutura</h2>
+        <p id="texto-sobre" class="text-gray-600 text-lg leading-relaxed mb-12 max-w-3xl mx-auto">
+            Carregando informações...
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div class="p-4 bg-white shadow rounded-lg">
-                <i class="fa-solid fa-wifi text-4xl text-blue-500 mb-2"></i>
-                <h3 class="font-bold">Wi-Fi Grátis</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="p-6 bg-white shadow-lg rounded-xl hover:-translate-y-2 transition duration-300 border-b-4 border-blue-500">
+                <i class="fa-solid fa-water text-4xl text-blue-500 mb-3"></i><h3 class="font-bold">Piscina 30k L</h3>
             </div>
-            <div class="p-4 bg-white shadow rounded-lg">
-                <i class="fa-solid fa-utensils text-4xl text-orange-500 mb-2"></i>
-                <h3 class="font-bold">Área Gourmet</h3>
+            <div class="p-6 bg-white shadow-lg rounded-xl hover:-translate-y-2 transition duration-300 border-b-4 border-orange-500">
+                <i class="fa-solid fa-fire-burner text-4xl text-orange-500 mb-3"></i><h3 class="font-bold">Churrasqueira</h3>
             </div>
-            <div class="p-4 bg-white shadow rounded-lg">
-                <i class="fa-solid fa-car text-4xl text-gray-500 mb-2"></i>
-                <h3 class="font-bold">Estacionamento</h3>
+            <div class="p-6 bg-white shadow-lg rounded-xl hover:-translate-y-2 transition duration-300 border-b-4 border-green-500">
+                <i class="fa-solid fa-tree text-4xl text-green-500 mb-3"></i><h3 class="font-bold">Área Verde</h3>
+            </div>
+            <div class="p-6 bg-white shadow-lg rounded-xl hover:-translate-y-2 transition duration-300 border-b-4 border-gray-500">
+                <i class="fa-solid fa-wifi text-4xl text-gray-500 mb-3"></i><h3 class="font-bold">Wi-Fi Livre</h3>
             </div>
         </div>
     </section>
 
-    <section id="fotos" class="py-16 bg-gray-100">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Nosso Espaço</h2>
+    <section id="fotos" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-10">Galeria de Fotos</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="overflow-hidden rounded-lg shadow-lg h-64">
-                    <img src="https://images.unsplash.com/photo-1572331165267-854da2b00dc1?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
-                </div>
-                <div class="overflow-hidden rounded-lg shadow-lg h-64">
-                    <img src="https://images.unsplash.com/photo-1533423723326-728b76c75e7a?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
-                </div>
-                <div class="overflow-hidden rounded-lg shadow-lg h-64 bg-black flex items-center justify-center relative group cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1517406603831-29e6123351d1?w=800" class="w-full h-full object-cover opacity-70">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <i class="fa-solid fa-play-circle text-6xl text-white opacity-80 group-hover:scale-110 transition"></i>
+            <div class="swiper mySwiper w-full h-[400px] md:h-[500px] rounded-2xl shadow-2xl">
+                <div class="swiper-wrapper" id="swiper-wrapper">
                     </div>
-                    <span class="absolute bottom-2 text-white text-sm">Tour pelo espaço (Clique para ver)</span>
-                </div>
-                <div class="overflow-hidden rounded-lg shadow-lg h-64">
-                    <img src="https://images.unsplash.com/photo-1560763462-8e1d51a6652e?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
-                </div>
-                 <div class="overflow-hidden rounded-lg shadow-lg h-64">
-                    <img src="https://images.unsplash.com/photo-1584627063467-b50a0058e579?w=800" class="w-full h-full object-cover hover:scale-110 transition duration-500">
-                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
             </div>
+
         </div>
     </section>
 
-    <section id="regras" class="py-16 max-w-4xl mx-auto px-4">
-        <div class="bg-red-50 border-l-4 border-red-500 p-8 rounded shadow-sm">
-            <h2 class="text-3xl font-bold text-red-700 mb-6"><i class="fa-solid fa-clipboard-list"></i> Regras e Termos</h2>
-            <ul class="space-y-4 text-gray-700">
-                <li class="flex items-start"><i class="fa-solid fa-circle-exclamation text-red-500 mt-1 mr-3"></i> <strong>Som Automotivo:</strong> Estritamente proibido o uso de som automotivo ou caixas de som profissionais que incomodem a vizinhança.</li>
-                <li class="flex items-start"><i class="fa-solid fa-clock text-red-500 mt-1 mr-3"></i> <strong>Horário:</strong> O uso do espaço é permitido das 08:00 às 22:00 impreterivelmente.</li>
-                <li class="flex items-start"><i class="fa-solid fa-wine-bottle text-red-500 mt-1 mr-3"></i> <strong>Vidros:</strong> Proibido copos e garrafas de vidro na área da borda da piscina.</li>
-                <li class="flex items-start"><i class="fa-solid fa-trash text-red-500 mt-1 mr-3"></i> <strong>Limpeza:</strong> O local deve ser entregue nas mesmas condições de organização. Jogue o lixo nos cestos.</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="agenda" class="py-16 bg-blue-50">
+    <section id="agenda" class="py-20 bg-green-50">
         <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-blue-800">Agenda e Reservas</h2>
-                <p class="text-gray-600">Selecione uma data verde para iniciar sua reserva.</p>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-green-900">Reserve Sua Data</h2>
+                <p class="text-gray-600 mt-2">Toque em uma data verde para ver detalhes.</p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <div class="flex justify-between items-center mb-6">
-                    <button id="prevMonth" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 id="currentMonthYear" class="text-xl font-bold capitalize text-gray-700"></h2>
-                    <button id="nextMonth" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200"><i class="fa-solid fa-chevron-right"></i></button>
+            <div class="bg-white p-4 md:p-8 rounded-2xl shadow-xl border border-green-100">
+                <div class="flex justify-between items-center mb-8">
+                    <button id="prevMonth" class="px-5 py-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="currentMonthYear" class="text-2xl font-bold capitalize text-gray-700"></h2>
+                    <button id="nextMonth" class="px-5 py-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
 
-                <div class="flex gap-4 justify-center mb-6 text-sm flex-wrap">
-                    <span class="flex items-center"><div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div> Livre</span>
-                    <span class="flex items-center"><div class="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div> Pendente</span>
-                    <span class="flex items-center"><div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div> Ocupado</span>
-                </div>
-
-                <div class="grid grid-cols-7 gap-2 mb-2 text-center font-bold text-gray-400 text-sm">
+                <div class="grid grid-cols-7 gap-2 mb-4 text-center font-bold text-gray-400 text-xs md:text-sm tracking-widest">
                     <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div>
                 </div>
 
                 <div id="calendarGrid" class="calendar-grid"></div>
+
+                <div class="flex justify-center gap-6 mt-8 text-sm text-gray-600">
+                    <span class="flex items-center"><div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div> Livre</span>
+                    <span class="flex items-center"><div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div> Ocupado</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-gray-800 text-white py-8 text-center">
-        <p class="mb-2">&copy; 2024 Recanto do Lazer. Todos os direitos reservados.</p>
-        <p class="text-sm text-gray-400">Desenvolvido para Portfólio.</p>
+    <section id="regras" class="py-20 max-w-4xl mx-auto px-4">
+        <div class="bg-red-50 border-l-8 border-red-500 p-8 md:p-12 rounded-r-lg shadow-sm">
+            <h2 class="text-3xl font-bold text-red-800 mb-6"><i class="fa-solid fa-triangle-exclamation"></i> Importante</h2>
+            <div id="texto-regras" class="text-gray-800 whitespace-pre-line text-lg leading-relaxed">
+                Carregando regras...
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-10 text-center border-t border-gray-800">
+        <p class="font-bold text-white mb-2">Chácara Umbelino</p>
+        <p class="text-sm">&copy; 2024 Todos os direitos reservados.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
     <script>
-        // --- CONFIGURAÇÃO ---
-        // COLE SUAS CHAVES AQUI (As mesmas que funcionaram antes)
+        // --- CONFIG ---
         const SUPABASE_URL = 'https://qgsvnaltmidtzjxeyylu.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_vAGlHnc6wjdSfXhi-BzAZA_x2jRT5uh';
-        
-        // Conexão segura
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentDate = new Date();
-        let configPreco = 0;
+        let configGlobal = {};
         let reservas = [];
         let calendarioCustom = [];
 
-        // --- INICIALIZAÇÃO ---
         document.addEventListener('DOMContentLoaded', async () => {
             await fetchConfig();
+            await fetchGaleria();
             await fetchDadosMes();
             renderCalendar();
         });
@@ -179,16 +147,44 @@
         document.getElementById('prevMonth').addEventListener('click', () => changeMonth(-1));
         document.getElementById('nextMonth').addEventListener('click', () => changeMonth(1));
 
-        // --- FUNÇÕES DE DADOS ---
         async function fetchConfig() {
-            const { data } = await _supabase.from('config').select('preco_padrao').single();
-            if(data) configPreco = data.preco_padrao;
+            const { data } = await _supabase.from('config').select('*').single();
+            if(data) {
+                configGlobal = data;
+                document.getElementById('texto-sobre').innerText = data.texto_sobre || "Bem vindo.";
+                document.getElementById('texto-regras').innerText = data.texto_regras || "Consulte regras.";
+                // Capa Dinâmica
+                if(data.url_capa) document.getElementById('heroImage').src = data.url_capa;
+                else document.getElementById('heroImage').src = "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=2070";
+            }
+        }
+
+        async function fetchGaleria() {
+            const { data } = await _supabase.from('galeria').select('*').order('id', {ascending: false});
+            const wrapper = document.getElementById('swiper-wrapper');
+            wrapper.innerHTML = '';
+            
+            if(data && data.length > 0) {
+                data.forEach(foto => {
+                    wrapper.innerHTML += `
+                        <div class="swiper-slide">
+                            <img src="${foto.url_imagem}" class="w-full h-full object-cover" />
+                        </div>`;
+                });
+                
+                // Inicia o Swiper após carregar as fotos
+                new Swiper(".mySwiper", {
+                    loop: true,
+                    pagination: { el: ".swiper-pagination", clickable: true },
+                    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+                    autoplay: { delay: 3000, disableOnInteraction: false },
+                });
+            }
         }
 
         async function fetchDadosMes() {
             const { data: res } = await _supabase.from('reservas').select('*');
             reservas = res || [];
-            
             const { data: custom } = await _supabase.from('calendario_custom').select('*');
             calendarioCustom = custom || [];
         }
@@ -198,11 +194,9 @@
             renderCalendar();
         }
 
-        // --- RENDERIZAÇÃO DO CALENDÁRIO ---
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
             const monthYear = document.getElementById('currentMonthYear');
-            
             grid.innerHTML = '';
             monthYear.innerText = currentDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
@@ -210,81 +204,97 @@
             const month = currentDate.getMonth();
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
 
-            for (let i = 0; i < firstDay; i++) {
-                grid.appendChild(document.createElement('div'));
-            }
+            for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
             for (let day = 1; day <= daysInMonth; day++) {
+                const dateObj = new Date(year, month, day);
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const el = document.createElement('div');
-                el.className = 'day-card flex flex-col items-center justify-center rounded-lg shadow text-sm font-bold relative transition border border-gray-100';
-                el.innerText = day;
-
-                const reserva = reservas.find(r => r.data === dateStr);
-                const custom = calendarioCustom.find(c => c.data === dateStr);
                 
-                let status = 'livre'; 
-                let valor = custom?.tipo === 'preco_especial' ? custom.novo_valor : configPreco;
+                const el = document.createElement('div');
+                // Design do Card do Dia
+                el.className = 'day-card flex flex-col items-center justify-between p-1 rounded-xl shadow-sm text-sm relative transition border border-gray-100 overflow-hidden';
+                
+                // Número do dia
+                const dayNumber = `<span class="text-xs font-bold self-start pl-1 text-gray-400">${day}</span>`;
 
-                if (custom?.tipo === 'bloqueio') status = 'ocupado';
-                else if (reserva?.status === 'confirmado') status = 'ocupado';
-                else if (reserva?.status === 'pendente') status = 'pendente';
-
-                if (status === 'ocupado') {
-                    el.classList.add('bg-red-500', 'text-white', 'opacity-80', 'cursor-not-allowed');
-                } else if (status === 'pendente') {
-                    el.classList.add('bg-yellow-400', 'text-white', 'cursor-not-allowed');
-                    el.innerHTML += `<span class="text-[10px] font-normal block">Pendente</span>`;
+                if (dateObj < hoje) {
+                    el.classList.add('bg-gray-100', 'cursor-not-allowed');
+                    el.innerHTML = dayNumber;
                 } else {
-                    el.classList.add('bg-white', 'text-gray-700', 'hover:bg-green-500', 'hover:text-white', 'hover:shadow-md');
-                    el.innerHTML += `<span class="text-[10px] font-normal block text-green-600 group-hover:text-white">R$ ${valor}</span>`;
-                    // Classe group para hover funcionar no filho
-                    el.classList.add('group');
-                    el.onclick = () => abrirReserva(dateStr, valor);
+                    const reserva = reservas.find(r => r.data === dateStr);
+                    const custom = calendarioCustom.find(c => c.data === dateStr);
+                    
+                    let status = 'livre'; 
+                    let valor = custom?.tipo === 'preco_especial' ? custom.novo_valor : configGlobal.preco_padrao;
+
+                    if (custom?.tipo === 'bloqueio') status = 'ocupado';
+                    else if (reserva?.status === 'confirmado') status = 'ocupado';
+                    else if (reserva?.status === 'pendente') status = 'pendente';
+
+                    if (status === 'ocupado') {
+                        el.classList.add('bg-red-500', 'text-white', 'opacity-90', 'cursor-not-allowed');
+                        el.innerHTML = `${dayNumber}<div class="flex-1 flex items-center justify-center"><i class="fa fa-lock"></i></div>`;
+                    } else if (status === 'pendente') {
+                        el.classList.add('bg-yellow-400', 'text-white', 'cursor-not-allowed');
+                        el.innerHTML = `${dayNumber}<span class="text-[10px] mb-1">Pendente</span>`;
+                    } else {
+                        // DIA LIVRE - PREÇO GRANDE
+                        el.classList.add('bg-white', 'text-gray-700', 'hover:bg-green-500', 'hover:text-white', 'hover:shadow-xl', 'cursor-pointer', 'group');
+                        el.onclick = () => abrirReserva(dateStr, valor);
+                        
+                        el.innerHTML = `
+                            ${dayNumber}
+                            <div class="flex flex-col items-center justify-center pb-1 w-full">
+                                <span class="text-[10px] text-green-600 group-hover:text-green-200 leading-none">R$</span>
+                                <span class="text-base font-extrabold text-green-700 group-hover:text-white leading-none">${valor}</span>
+                            </div>
+                        `;
+                    }
                 }
                 grid.appendChild(el);
             }
         }
 
-        // --- FLUXO DE RESERVA ---
         async function abrirReserva(dataISO, valor) {
             const dataFormatada = new Date(dataISO + 'T00:00:00').toLocaleDateString('pt-BR');
+            const regrasTexto = configGlobal.texto_regras;
 
             const { value: formValues } = await Swal.fire({
-                title: `<span class="text-xl">Reservar: ${dataFormatada}</span>`,
+                title: `<span class="text-2xl font-bold text-green-700">Reservar: ${dataFormatada}</span>`,
                 html: `
-                    <div class="text-left mb-4 bg-blue-50 p-4 rounded text-sm text-gray-700">
-                        <p class="text-lg font-bold text-blue-800">Valor: R$ ${valor.toFixed(2)}</p>
-                        <p class="mt-2 text-xs">Ao clicar em aceitar, você concorda com as regras descritas no site (sem som automotivo, horário limite, etc).</p>
+                    <div class="text-left mb-6 bg-green-50 p-5 rounded-lg border border-green-200">
+                        <p class="text-2xl font-bold text-green-800 text-center mb-2">R$ ${valor}</p>
+                        <hr class="border-green-200 mb-2">
+                        <p class="text-xs text-gray-600"><i class="fa fa-info-circle"></i> Ao confirmar, você concorda com os termos de uso.</p>
                     </div>
-                    <input id="swal-nome" class="swal2-input" placeholder="Seu Nome Completo">
-                    <input id="swal-cpf" class="swal2-input" placeholder="CPF (Apenas números)">
-                    <input id="swal-tel" class="swal2-input" placeholder="WhatsApp (com DDD)">
+                    <div class="space-y-3">
+                        <input id="swal-nome" class="swal2-input m-0 w-full" placeholder="Seu Nome Completo">
+                        <input id="swal-cpf" class="swal2-input m-0 w-full" placeholder="CPF (Apenas números)">
+                        <input id="swal-tel" class="swal2-input m-0 w-full" placeholder="WhatsApp (com DDD)">
+                    </div>
                 `,
                 focusConfirm: false,
-                confirmButtonColor: '#2563EB', // Azul do site
-                confirmButtonText: 'Aceitar e Gerar Contrato <i class="fa fa-file-pdf"></i>',
+                confirmButtonColor: '#16a34a',
+                confirmButtonText: 'Gerar Contrato e Reservar',
                 showCancelButton: true,
                 cancelButtonText: 'Cancelar',
+                width: '400px',
                 preConfirm: () => {
                     const nome = document.getElementById('swal-nome').value;
                     const cpf = document.getElementById('swal-cpf').value;
                     const tel = document.getElementById('swal-tel').value;
-                    if (!nome || !cpf || !tel) {
-                        Swal.showValidationMessage('Por favor, preencha todos os campos.');
-                    }
-                    return { nome, cpf, tel, valor, dataISO, dataFormatada };
+                    if (!nome || !cpf || !tel) Swal.showValidationMessage('Preencha todos os campos!');
+                    return { nome, cpf, tel, valor, dataISO, dataFormatada, regrasTexto };
                 }
             });
 
-            if (formValues) {
-                processarReserva(formValues);
-            }
+            if (formValues) processarReserva(formValues);
         }
 
         async function processarReserva(dados) {
-            Swal.fire({ title: 'Salvando...', didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Reservando...', didOpen: () => Swal.showLoading() });
 
             const { error } = await _supabase.from('reservas').insert({
                 data: dados.dataISO,
@@ -296,20 +306,19 @@
             });
 
             if (error) {
-                console.error(error);
-                Swal.fire('Ops!', 'Parece que alguém acabou de reservar essa data ou houve um erro.', 'error');
+                Swal.fire('Ops!', 'Alguém acabou de reservar essa data :(', 'error');
                 return;
             }
 
             gerarPDF(dados);
 
-            const msg = `Olá! Quero confirmar a reserva no Recanto para o dia *${dados.dataFormatada}*.%0AValor: R$ ${dados.valor}.%0ANome: ${dados.nome}.%0A*Segue meu contrato assinado em anexo.*`;
+            const msg = `Olá! Quero confirmar minha reserva na Chácara Umbelino para o dia *${dados.dataFormatada}*.%0AValor: R$ ${dados.valor}.%0ANome: ${dados.nome}.%0A*Estou enviando o contrato em anexo.*`;
             
             Swal.fire({
                 icon: 'success',
-                title: 'Reserva Iniciada!',
-                html: 'O contrato PDF foi baixado.<br><b>Envie-o agora no WhatsApp para confirmar.</b>',
-                confirmButtonText: '<i class="fab fa-whatsapp"></i> Enviar no WhatsApp',
+                title: 'Sucesso!',
+                html: 'Contrato gerado. <b>Envie-o agora no WhatsApp.</b>',
+                confirmButtonText: '<i class="fab fa-whatsapp"></i> Enviar WhatsApp',
                 confirmButtonColor: '#25D366'
             }).then(() => {
                 window.open(`https://wa.me/55SEUNUMEROAQUI?text=${msg}`, '_blank');
@@ -320,52 +329,46 @@
         function gerarPDF(dados) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-
-            // Cabeçalho
-            doc.setFillColor(41, 128, 185); // Azul
-            doc.rect(0, 0, 210, 20, 'F');
+            
+            // Layout profissional do contrato
+            doc.setFillColor(22, 163, 74); // Verde
+            doc.rect(0, 0, 210, 25, 'F');
             doc.setTextColor(255, 255, 255);
-            doc.setFontSize(16);
-            doc.text("CONTRATO DE LOCAÇÃO - RECANTO DO LAZER", 105, 13, null, null, "center");
-
-            // Corpo
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(12);
-            doc.text(`Identificação do Locatário:`, 20, 40);
+            doc.setFontSize(18);
             doc.setFont("helvetica", "bold");
-            doc.text(`${dados.nome}`, 20, 48);
-            doc.setFont("helvetica", "normal");
-            doc.text(`CPF: ${dados.cpf} | WhatsApp: ${dados.tel}`, 20, 55);
+            doc.text("CONTRATO DE LOCAÇÃO - CHÁCARA UMBELINO", 105, 16, null, null, "center");
 
-            doc.line(20, 60, 190, 60);
-
-            doc.text(`Detalhes da Reserva:`, 20, 70);
-            doc.setFontSize(14);
-            doc.text(`DATA: ${dados.dataFormatada}`, 20, 80);
-            doc.text(`VALOR TOTAL: R$ ${dados.valor.toFixed(2)}`, 120, 80);
-            
+            doc.setTextColor(0, 0, 0);
             doc.setFontSize(11);
-            doc.text("Termos de Responsabilidade:", 20, 100);
-            const regras = [
-                "1. O LOCATÁRIO assume total responsabilidade por danos causados ao imóvel.",
-                "2. É PROIBIDO som automotivo e gritarias excessivas (Lei do Silêncio).",
-                "3. Horário de funcionamento: 08:00 às 22:00.",
-                "4. A piscina deve ser usada com trajes adequados.",
-                "5. Proibido objetos de vidro na borda da piscina."
-            ];
+            doc.setFont("helvetica", "normal");
             
-            let y = 110;
-            regras.forEach(regra => {
-                doc.text(regra, 20, y);
-                y += 10;
-            });
+            let y = 40;
+            doc.text(`LOCATÁRIO: ${dados.nome.toUpperCase()}`, 20, y); y+=8;
+            doc.text(`CPF: ${dados.cpf}   |   CONTATO: ${dados.tel}`, 20, y); y+=15;
 
-            doc.text("__________________________________________", 105, 170, null, null, "center");
-            doc.text("Assinatura Digital do Locatário", 105, 175, null, null, "center");
+            doc.setFillColor(240, 240, 240);
+            doc.rect(20, y-5, 170, 20, 'F');
+            doc.setFont("helvetica", "bold");
+            doc.text(`DATA RESERVADA: ${dados.dataFormatada}`, 30, y+8);
+            doc.text(`VALOR TOTAL: R$ ${dados.valor.toFixed(2)}`, 120, y+8);
+            
+            y+=30;
+            doc.setFont("helvetica", "bold");
+            doc.text("TERMOS E REGRAS DO LOCAL:", 20, y);
+            y+=10;
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            const regras = doc.splitTextToSize(dados.regrasTexto, 170);
+            doc.text(regras, 20, y);
+
+            doc.text("__________________________________________", 105, 240, null, null, "center");
+            doc.text("Assinatura Eletrônica do Locatário", 105, 245, null, null, "center");
             doc.setFontSize(8);
-            doc.text(`Aceite eletrônico registrado em: ${new Date().toLocaleString()}`, 105, 180, null, null, "center");
+            doc.setTextColor(100);
+            doc.text(`Aceite realizado via web em ${new Date().toLocaleString()}`, 105, 250, null, null, "center");
 
-            doc.save(`Contrato_Recanto_${dados.dataISO}.pdf`);
+            doc.save(`Contrato_Umbelino_${dados.dataISO}.pdf`);
         }
     </script>
 </body>

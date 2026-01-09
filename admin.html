@@ -3,89 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Gestão</title>
+    <title>Admin - Chácara Umbelino</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <style>
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.2rem; }
-        .day-box { min-height: 80px; font-size: 0.8rem; }
-    </style>
 </head>
-<body class="bg-gray-800 text-gray-100 min-h-screen">
+<body class="bg-gray-900 text-gray-100 pb-20 font-sans">
 
     <div id="loginOverlay" class="fixed inset-0 bg-gray-900 z-50 flex items-center justify-center">
-        <div class="text-center">
-            <h2 class="text-2xl mb-4">Acesso Administrativo</h2>
-            <button onclick="checkAuth()" class="bg-blue-600 px-6 py-2 rounded">Entrar</button>
+        <div class="bg-gray-800 p-8 rounded shadow-lg text-center border border-gray-700 w-96">
+            <h2 class="text-2xl mb-6 font-bold text-green-500">Admin Umbelino</h2>
+            <input type="password" id="passInput" class="w-full p-3 mb-4 text-black rounded bg-gray-200 outline-none focus:ring-2 focus:ring-green-500" placeholder="Senha de Acesso">
+            <button onclick="checkAuth()" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded w-full font-bold transition">Entrar</button>
         </div>
     </div>
 
-    <nav class="bg-gray-900 p-4 shadow flex justify-between items-center">
-        <h1 class="font-bold text-xl">Painel Admin</h1>
-        <button onclick="logout()" class="text-red-400 text-sm">Sair</button>
+    <nav class="bg-gray-800 p-4 shadow-lg flex justify-between items-center sticky top-0 z-40 border-b border-gray-700">
+        <h1 class="font-bold text-xl text-green-400"><i class="fa-solid fa-gear"></i> Painel Umbelino</h1>
+        <div class="space-x-4 text-sm">
+            <a href="#calendario" class="hover:text-white text-gray-400 transition">Agenda</a>
+            <a href="#conteudo" class="hover:text-white text-gray-400 transition">Site & Fotos</a>
+            <button onclick="location.reload()" class="text-red-400 hover:text-red-300">Sair</button>
+        </div>
     </nav>
 
-    <main class="p-4 max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-4">
-            <button id="prev" class="bg-gray-700 px-3 py-1 rounded"><</button>
-            <h2 id="monthTitle" class="text-xl font-bold"></h2>
-            <button id="next" class="bg-gray-700 px-3 py-1 rounded">></button>
-        </div>
+    <main class="p-4 max-w-6xl mx-auto space-y-12 mt-6">
+        
+        <section id="calendario" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center mb-6">
+                <button id="prev" class="bg-gray-700 w-10 h-10 rounded-full hover:bg-gray-600 transition"><i class="fa fa-chevron-left"></i></button>
+                <div class="text-center">
+                    <h2 id="monthTitle" class="text-2xl font-bold capitalize"></h2>
+                    <p class="text-sm text-gray-400 mt-1">Preço Padrão Global: <span id="displayPrecoPadrao" class="font-bold text-green-400">R$ ...</span></p>
+                </div>
+                <button id="next" class="bg-gray-700 w-10 h-10 rounded-full hover:bg-gray-600 transition"><i class="fa fa-chevron-right"></i></button>
+            </div>
 
-        <div class="grid grid-cols-7 text-center font-bold mb-2">
-            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-        </div>
-        <div id="adminGrid" class="calendar-grid"></div>
+            <div class="grid grid-cols-7 text-center font-bold mb-2 text-gray-500 uppercase text-xs tracking-wider">
+                <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+            </div>
+            <div id="adminGrid" class="grid grid-cols-7 gap-1"></div>
+        </section>
+
+        <section id="conteudo" class="grid md:grid-cols-2 gap-8">
+            
+            <div class="space-y-8">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-4 text-white"><i class="fa fa-image"></i> Capa Principal (Hero)</h3>
+                    <div class="mb-4 h-40 bg-gray-700 rounded overflow-hidden relative group">
+                        <img id="previewCapa" src="" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <span class="text-sm">Imagem Atual</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="file" id="inputCapa" accept="image/*" class="text-sm text-gray-400 w-full file:bg-gray-700 file:text-white file:border-0 file:py-2 file:px-4 file:rounded file:cursor-pointer">
+                        <button onclick="uploadCapa()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white font-bold transition">Alterar</button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-bold mb-4 text-white"><i class="fa fa-pen-to-square"></i> Textos</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Regras (Aparece no Contrato)</label>
+                            <textarea id="txtRegras" rows="4" class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white focus:border-green-500 outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Quem Somos (Sobre)</label>
+                            <textarea id="txtSobre" rows="4" class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white focus:border-green-500 outline-none"></textarea>
+                        </div>
+                        <button onclick="salvarTextos()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-3 rounded w-full font-bold transition">Salvar Textos</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg border-l-4 border-purple-500 h-fit">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-white"><i class="fa fa-images"></i> Galeria (Carrossel)</h3>
+                    <span class="text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded">Max recomendada: 10 fotos</span>
+                </div>
+                
+                <div class="mb-6 p-4 bg-gray-700/50 rounded border border-dashed border-gray-600">
+                    <label class="block text-sm mb-2 text-gray-300">Adicionar Nova Foto ao Carrossel</label>
+                    <div class="flex gap-2">
+                        <input type="file" id="inputFoto" accept="image/*" class="text-sm text-gray-400 w-full file:bg-gray-600 file:text-white file:border-0 file:py-2 file:px-4 file:rounded file:cursor-pointer">
+                        <button onclick="uploadFoto()" class="bg-purple-600 hover:bg-purple-700 px-6 rounded text-white font-bold transition"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+
+                <div id="galeriaGrid" class="grid grid-cols-3 gap-2 max-h-[500px] overflow-y-auto pr-1">
+                    </div>
+            </div>
+        </section>
+
     </main>
 
-<script>
-        // --- CONFIGURAÇÃO ---
+    <script>
+        // --- CONFIG ---
         const SUPABASE_URL = 'https://qgsvnaltmidtzjxeyylu.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_vAGlHnc6wjdSfXhi-BzAZA_x2jRT5uh';
-        
-        // CORREÇÃO 1: Criando a conexão com o nome _supabase
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        // SENHA SIMPLES
         const ADMIN_PASS = "123456"; 
 
         let currentDate = new Date();
+        let configGlobal = {}; 
         let reservas = [];
         let calendarioCustom = [];
 
+        // --- AUTH ---
         function checkAuth() {
-            Swal.fire({
-                title: 'Senha Admin',
-                input: 'password',
-                confirmButtonText: 'Acessar',
-                showCancelButton: false
-            }).then((result) => {
-                if (result.value === ADMIN_PASS) {
-                    document.getElementById('loginOverlay').style.display = 'none';
-                    loadData();
-                } else {
-                    Swal.fire('Senha incorreta', '', 'error');
-                }
-            });
+            if (document.getElementById('passInput').value === ADMIN_PASS) {
+                document.getElementById('loginOverlay').style.display = 'none';
+                initSystem();
+            } else {
+                Swal.fire('Erro', 'Senha incorreta', 'error');
+            }
         }
 
-        function logout() { location.reload(); }
+        async function initSystem() {
+            await Promise.all([loadConfig(), loadData(), loadGaleria()]);
+        }
 
-        document.getElementById('prev').onclick = () => { currentDate.setMonth(currentDate.getMonth()-1); loadData(); };
-        document.getElementById('next').onclick = () => { currentDate.setMonth(currentDate.getMonth()+1); loadData(); };
+        async function loadConfig() {
+            const { data } = await _supabase.from('config').select('*').single();
+            if (data) {
+                configGlobal = data;
+                document.getElementById('displayPrecoPadrao').innerText = `R$ ${data.preco_padrao}`;
+                document.getElementById('txtRegras').value = data.texto_regras || '';
+                document.getElementById('txtSobre').value = data.texto_sobre || '';
+                if(data.url_capa) document.getElementById('previewCapa').src = data.url_capa;
+            }
+        }
 
         async function loadData() {
-            // CORREÇÃO 2: Usando _supabase aqui
             const { data: r } = await _supabase.from('reservas').select('*');
             reservas = r || [];
-            
-            // CORREÇÃO 3: Usando _supabase aqui
             const { data: c } = await _supabase.from('calendario_custom').select('*');
             calendarioCustom = c || [];
-            
             renderAdmin();
         }
 
@@ -100,105 +157,241 @@
 
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const firstDay = new Date(year, month, 1).getDay();
+            const hoje = new Date(); hoje.setHours(0,0,0,0);
 
             for(let i=0; i<firstDay; i++) grid.appendChild(document.createElement('div'));
 
             for(let day=1; day<=daysInMonth; day++) {
+                const dateObj = new Date(year, month, day);
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
                 const el = document.createElement('div');
-                el.className = 'day-box bg-gray-700 rounded p-1 hover:bg-gray-600 cursor-pointer relative border border-gray-600';
-                
-                let html = `<div class="font-bold text-right">${day}</div>`;
+                el.className = 'min-h-[90px] bg-gray-700 rounded p-2 border border-gray-600 relative transition flex flex-col justify-between';
 
-                const reserva = reservas.find(r => r.data === dateStr);
-                const custom = calendarioCustom.find(c => c.data === dateStr);
+                if (dateObj < hoje) {
+                    el.classList.add('opacity-40', 'bg-gray-800', 'cursor-not-allowed');
+                    el.innerHTML = `<div class="font-bold text-gray-500 text-right">${day}</div>`;
+                } else {
+                    el.classList.add('hover:bg-gray-600', 'cursor-pointer', 'hover:border-green-500');
+                    
+                    const reserva = reservas.find(r => r.data === dateStr);
+                    const custom = calendarioCustom.find(c => c.data === dateStr);
+                    let precoDia = custom?.tipo === 'preco_especial' ? custom.novo_valor : configGlobal.preco_padrao;
 
-                if (custom?.tipo === 'bloqueio') {
-                    el.classList.add('bg-red-900');
-                    html += `<div class="text-xs text-red-300 mt-1"><i class="fa fa-lock"></i> Bloqueado</div>`;
-                } else if (custom?.tipo === 'preco_especial') {
-                    html += `<div class="text-xs text-green-300 mt-1">R$ ${custom.novo_valor}</div>`;
+                    // Header do dia
+                    let html = `<div class="flex justify-between items-start">
+                                    <span class="text-xs font-mono text-gray-400">R$</span>
+                                    <span class="font-bold text-lg">${day}</span>
+                                </div>`;
+                    
+                    // Corpo (Status/Preço)
+                    if (custom?.tipo === 'bloqueio') {
+                        el.classList.add('bg-red-900/30', 'border-red-800');
+                        html += `<div class="text-center mt-1"><i class="fa fa-lock text-red-400 text-lg"></i></div>`;
+                    } else if (reserva) {
+                        const bg = reserva.status === 'pendente' ? 'bg-yellow-500/20 text-yellow-300' : 'bg-green-500/20 text-green-300';
+                        html += `<div class="mt-1 text-xs rounded px-1 py-1 truncate ${bg}">
+                                    ${reserva.nome.split(' ')[0]}
+                                 </div>`;
+                    } else {
+                        // Se livre, mostra o preço GRANDE
+                        html += `<div class="text-center font-bold text-green-400 text-sm mt-1">${precoDia}</div>`;
+                    }
+
+                    el.innerHTML = html;
+                    el.onclick = () => gerenciarData(dateStr, reserva, custom, precoDia);
                 }
-
-                if (reserva) {
-                    const color = reserva.status === 'pendente' ? 'text-yellow-400' : 'text-green-400';
-                    const icon = reserva.status === 'pendente' ? 'fa-clock' : 'fa-check';
-                    html += `<div class="text-xs ${color} mt-1 border-t border-gray-500 pt-1">
-                                <i class="fa ${icon}"></i> ${reserva.nome.split(' ')[0]}
-                             </div>`;
-                }
-
-                el.innerHTML = html;
-                el.onclick = () => gerenciarData(dateStr, reserva, custom);
                 grid.appendChild(el);
             }
         }
 
-        async function gerenciarData(dateStr, reserva, custom) {
-            const acoes = {};
-            if (reserva) acoes.reserva = true;
+        document.getElementById('prev').onclick = () => { currentDate.setMonth(currentDate.getMonth()-1); loadData(); };
+        document.getElementById('next').onclick = () => { currentDate.setMonth(currentDate.getMonth()+1); loadData(); };
+
+        // --- LÓGICA DE PREÇOS (CORRIGIDA) ---
+        async function gerenciarData(dateStr, reserva, custom, precoAtual) {
+            const formatData = dateStr.split('-').reverse().join('/');
             
-            await Swal.fire({
-                title: `Gestão: ${dateStr}`,
-                html: `
-                    ${reserva ? `
-                        <div class="bg-gray-100 p-2 rounded text-gray-800 mb-2 text-left text-sm">
-                            <p><strong>Cliente:</strong> ${reserva.nome}</p>
-                            <p><strong>Tel:</strong> ${reserva.telefone}</p>
-                            <p><strong>Status:</strong> ${reserva.status.toUpperCase()}</p>
-                            <div class="flex gap-2 mt-2">
-                                <button onclick="window.atualizarReserva('${dateStr}', 'confirmado')" class="bg-green-500 text-white px-2 py-1 rounded text-xs">Aprovar</button>
-                                <button onclick="window.deletarReserva('${dateStr}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs">Excluir</button>
-                            </div>
+            // HTML do Modal
+            let htmlContent = '';
+            if (reserva) {
+                htmlContent += `
+                    <div class="bg-gray-100 p-3 rounded text-left mb-4 border-l-4 ${reserva.status === 'pendente' ? 'border-yellow-400' : 'border-green-500'}">
+                        <p class="text-gray-800 font-bold">${reserva.nome}</p>
+                        <p class="text-gray-600 text-sm">CPF: ${reserva.cpf} | Tel: ${reserva.telefone}</p>
+                        <div class="flex gap-2 mt-3">
+                            <button onclick="crudReserva('aprovar', '${dateStr}')" class="flex-1 bg-green-600 text-white py-2 rounded text-sm font-bold shadow">Aprovar</button>
+                            <button onclick="crudReserva('excluir', '${dateStr}')" class="flex-1 bg-red-600 text-white py-2 rounded text-sm font-bold shadow">Excluir</button>
                         </div>
-                    ` : ''}
-                    <hr class="my-3">
-                    <h3 class="text-sm font-bold mb-2">Configurações da Data</h3>
-                    <div class="flex flex-col gap-2">
-                        <button onclick="window.setPreco('${dateStr}')" class="bg-blue-500 text-white py-2 rounded">Definir Preço Especial</button>
-                        <button onclick="window.setBloqueio('${dateStr}')" class="bg-gray-600 text-white py-2 rounded">Bloquear Data (Não Alugar)</button>
-                        <button onclick="window.limparData('${dateStr}')" class="bg-white text-gray-800 border py-2 rounded">Limpar Configurações</button>
                     </div>
-                `,
+                    <hr class="border-gray-300 mb-4">
+                `;
+            }
+
+            htmlContent += `
+                <div class="grid gap-3">
+                    <button id="btnMudarPreco" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded font-bold shadow flex justify-center items-center gap-2">
+                        <i class="fa fa-tag"></i> Alterar Valor (Atual: R$ ${precoAtual})
+                    </button>
+                    <button onclick="acaoRapida('bloquear', '${dateStr}')" class="bg-gray-600 hover:bg-gray-700 text-white py-3 rounded font-bold shadow">
+                        <i class="fa fa-lock"></i> Bloquear Dia
+                    </button>
+                    <button onclick="acaoRapida('limpar', '${dateStr}')" class="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 py-3 rounded font-bold shadow">
+                        <i class="fa fa-rotate-left"></i> Restaurar Padrão
+                    </button>
+                </div>
+            `;
+
+            await Swal.fire({
+                title: `Gerenciar: ${formatData}`,
+                html: htmlContent,
                 showConfirmButton: false,
-                showCloseButton: true
+                didOpen: () => {
+                    // Adiciona o listener no botão de preço manualmente para controlar o fluxo
+                    document.getElementById('btnMudarPreco').addEventListener('click', () => flowMudarPreco(dateStr, precoAtual));
+                }
             });
         }
 
-        // --- FUNÇÕES GLOBAIS (Também precisam usar _supabase) ---
+        async function flowMudarPreco(dateStr, valorAtual) {
+            Swal.close(); // Fecha o menu anterior
+            
+            // 1. Pede o novo valor
+            const { value: novoPrecoString } = await Swal.fire({
+                title: 'Novo Valor (R$)',
+                input: 'number',
+                inputValue: valorAtual,
+                showCancelButton: true,
+                confirmButtonText: 'Próximo'
+            });
 
-        window.setPreco = async (date) => {
-            const { value: preco } = await Swal.fire({title: 'Novo Valor', input: 'number'});
-            if(preco) {
-                // CORREÇÃO 4
-                await _supabase.from('calendario_custom').upsert({ data: date, tipo: 'preco_especial', novo_valor: preco });
-                Swal.close(); loadData();
+            if (!novoPrecoString) return; 
+            const novoPreco = parseFloat(novoPrecoString);
+
+            // 2. Pergunta o escopo
+            const { isConfirmed: isGlobal } = await Swal.fire({
+                title: 'Onde aplicar esse valor?',
+                html: `Você digitou <b>R$ ${novoPreco}</b>.<br>Deseja aplicar isso apenas no dia <b>${dateStr}</b> ou mudar o padrão de <b>TODO O CALENDÁRIO</b> para frente?`,
+                icon: 'question',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Mudar Padrão Global (Tudo)',
+                denyButtonText: 'Apenas neste dia',
+                confirmButtonColor: '#d33', // Vermelho para alertar que é global
+                denyButtonColor: '#3085d6' // Azul para dia único
+            });
+
+            Swal.fire({title: 'Salvando...', didOpen: () => Swal.showLoading()});
+
+            if (isGlobal) {
+                // Atualiza Global
+                await _supabase.from('config').update({ preco_padrao: novoPreco }).eq('id', configGlobal.id);
+                // Opcional: Limpar customizações antigas para garantir que todos sigam o novo padrão? 
+                // Por segurança, não vamos limpar, apenas mudar a base.
+            } else {
+                // Atualiza Unico
+                await _supabase.from('calendario_custom').upsert({ data: dateStr, tipo: 'preco_especial', novo_valor: novoPreco });
             }
-        };
 
-        window.setBloqueio = async (date) => {
-            // CORREÇÃO 5
-            await _supabase.from('calendario_custom').upsert({ data: date, tipo: 'bloqueio', novo_valor: null });
+            Swal.close();
+            await initSystem(); // Recarrega tudo para ver a mudança
+        }
+
+        // --- AUXILIARES ---
+        window.acaoRapida = async (tipo, date) => {
+            if(tipo === 'bloquear') await _supabase.from('calendario_custom').upsert({ data: date, tipo: 'bloqueio', novo_valor: null });
+            if(tipo === 'limpar') await _supabase.from('calendario_custom').delete().eq('data', date);
             Swal.close(); loadData();
         };
 
-        window.limparData = async (date) => {
-            // CORREÇÃO 6
-            await _supabase.from('calendario_custom').delete().eq('data', date);
+        window.crudReserva = async (acao, date) => {
+            if(acao === 'aprovar') await _supabase.from('reservas').update({ status: 'confirmado' }).eq('data', date);
+            if(acao === 'excluir') await _supabase.from('reservas').delete().eq('data', date);
             Swal.close(); loadData();
         };
 
-        window.atualizarReserva = async (date, status) => {
-            // CORREÇÃO 7
-            await _supabase.from('reservas').update({ status }).eq('data', date);
-            Swal.close(); loadData();
-        };
+        async function salvarTextos() {
+            await _supabase.from('config').update({ 
+                texto_regras: document.getElementById('txtRegras').value,
+                texto_sobre: document.getElementById('txtSobre').value 
+            }).eq('id', configGlobal.id);
+            Swal.fire('Sucesso', 'Textos salvos!', 'success');
+        }
 
-        window.deletarReserva = async (date) => {
-            // CORREÇÃO 8
-            await _supabase.from('reservas').delete().eq('data', date);
-            Swal.close(); loadData();
+        // --- UPLOADS ---
+        async function uploadFotoGeneric(file, bucketPrefix) {
+            // 1. Limpeza do nome do arquivo (Remove acentos e caracteres especiais)
+            // Transforma "Foto da Chácara.jpg" em "foto-da-chacara.jpg"
+            const cleanName = file.name
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, "-"); // Troca símbolos por traço
+            
+            // 2. Cria nome único
+            const fileName = `${bucketPrefix}_${Date.now()}_${cleanName}`;
+
+            // 3. Tenta Upload
+            const { data, error } = await _supabase.storage
+                .from('fotos_chacara') // Tem que bater com o nome no Supabase
+                .upload(fileName, file, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+            if(error) {
+                console.error("Erro Supabase:", error); // Mostra detalhe no console (F12)
+                throw error;
+            }
+
+            // 4. Pega URL
+            const { data: urlData } = _supabase.storage
+                .from('fotos_chacara')
+                .getPublicUrl(fileName);
+
+            return urlData.publicUrl;
+        }
+
+        async function uploadCapa() {
+            const file = document.getElementById('inputCapa').files[0];
+            if(!file) return;
+            Swal.fire({title: 'Enviando Capa...', didOpen: () => Swal.showLoading()});
+            try {
+                const url = await uploadFotoGeneric(file, 'capa');
+                await _supabase.from('config').update({ url_capa: url }).eq('id', configGlobal.id);
+                document.getElementById('previewCapa').src = url;
+                Swal.fire('Sucesso', 'Capa atualizada!', 'success');
+            } catch (e) { Swal.fire('Erro', e.message, 'error'); }
+        }
+
+        async function uploadFoto() {
+            const file = document.getElementById('inputFoto').files[0];
+            if(!file) return;
+            Swal.fire({title: 'Enviando p/ Galeria...', didOpen: () => Swal.showLoading()});
+            try {
+                const url = await uploadFotoGeneric(file, 'galeria');
+                await _supabase.from('galeria').insert({ url_imagem: url });
+                loadGaleria();
+                Swal.fire('Sucesso', 'Foto adicionada!', 'success');
+            } catch (e) { Swal.fire('Erro', e.message, 'error'); }
+        }
+
+        async function loadGaleria() {
+            const { data } = await _supabase.from('galeria').select('*').order('id', {ascending: false});
+            const grid = document.getElementById('galeriaGrid');
+            grid.innerHTML = '';
+            data.forEach(foto => {
+                grid.innerHTML += `
+                    <div class="relative group h-24 bg-gray-900 rounded overflow-hidden">
+                        <img src="${foto.url_imagem}" class="w-full h-full object-cover">
+                        <button onclick="deletarFoto(${foto.id})" class="absolute inset-0 bg-red-600/80 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition"><i class="fa fa-trash"></i></button>
+                    </div>`;
+            });
+        }
+        
+        window.deletarFoto = async (id) => {
+            await _supabase.from('galeria').delete().eq('id', id);
+            loadGaleria();
         };
     </script>
 </body>
